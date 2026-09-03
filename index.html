@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — ChronoX</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#07070c;color:#fff;
+ font-family:Arial,sans-serif;min-height:100vh
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button,input,select{outline:none}
+
+.auth{
+ width:min(440px,94%);
+ margin:35px auto;
+ padding:25px;
+ background:#11111a;
+ border:1px solid #392152;
+ border-radius:25px;
+ box-shadow:0 0 60px #702bd32b
+}
+
+.logo{
+ text-align:center;
+ font-size:30px;
+ font-weight:900;
+ color:#a96cff
+}
+.sub{
+ text-align:center;
+ color:#777;
+ font-size:12px;
+ margin:6px 0 22px
+}
+
+.tabs,.nav{
+ display:flex;
+ gap:7px
+}
+
+.tabs button,.nav button{
+ flex:1;
+ padding:12px;
+ border:0;
+ border-radius:11px;
+ background:#191620;
+ color:#888;
+ font-weight:bold
+}
+
+.tabs .on,.nav .on{
+ background:#7832e5;
+ color:white
+}
+
+input,select{
+ width:100%;
+ padding:13px;
+ margin:6px 0;
+ background:#090910;
+ color:white;
+ border:1px solid #302b39;
+ border-radius:11px
+}
+
+.main{
+ width:100%;
+ padding:13px;
+ margin:6px 0;
+ background:#7832e5;
+ color:white;
+ border:0;
+ border-radius:11px;
+ font-weight:bold;
+ transition:.2s
+}
+
+.main:hover{
+ transform:translateY(-2px);
+ box-shadow:0 8px 20px #7832e555
+}
+
+.social{
+ background:#17151e;
+ border:1px solid #332c3d;
+ color:white
+}
+
+.msg{
+ min-height:18px;
+ text-align:center;
+ color:#ff789d;
+ font-size:12px
+}
+
+.dob{
+ color:#888;
+ font-size:11px;
+ margin-top:8px
+}
+
+.history{
+ margin-top:18px;
+ padding:14px;
+ background:#090910;
+ border-radius:15px
+}
+
+.history b{
+ display:block;
+ margin-bottom:10px
+}
+
+.item{
+ padding:10px;
+ margin:5px 0;
+ background:#16151e;
+ border-radius:9px;
+ font-size:11px;
+ display:flex;
+ justify-content:space-between
+}
+
+.empty{
+ color:#666;
+ text-align:center;
+ font-size:11px
+}
+
+/* APP */
+
+.app{
+ display:none;
+ width:min(1050px,94%);
+ margin:auto;
+ padding:18px 0 40px
+}
+
+.top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:15px
+}
+
+.brand{
+ font-size:22px;
+ font-weight:900;
+ color:#a96cff
+}
+
+.userbox{
+ display:flex;
+ align-items:center;
+ gap:8px
+}
+
+.avatar{
+ width:40px;
+ height:40px;
+ border-radius:50%;
+ object-fit:cover;
+ background:#7832e5;
+ border:2px solid #9d62ff
+}
+
+.logout{
+ width:auto;
+ padding:9px 12px;
+ background:#17151e;
+ color:white;
+ border:1px solid #332c3d;
+ border-radius:9px
+}
+
+.nav{
+ margin-bottom:16px
+}
+
+.nav button{
+ font-size:12px
+}
+
+.page{display:none}
+.page.active{display:block}
+
+/* TIMER */
+
+.timerBox{
+ background:#11111a;
+ border:1px solid #38204e;
+ border-radius:25px;
+ padding:30px 15px;
+ text-align:center
+}
+
+.label{
+ color:#888;
+ font-size:10px;
+ letter-spacing:3px
+}
+
+#display,#swDisplay{
+ font-size:clamp(55px,13vw,110px);
+ font-weight:900;
+ margin:20px 0;
+ font-variant-numeric:tabular-nums
+}
+
+.inputs{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:5px
+}
+
+.inputs input{
+ width:75px;
+ text-align:center;
+ font-size:18px
+}
+
+.controls{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:15px
+}
+
+.controls button{
+ min-width:105px;
+ padding:12px;
+ border:0;
+ border-radius:11px;
+ background:#7832e5;
+ color:white;
+ font-weight:bold
+}
+
+.quick{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin-top:15px
+}
+
+.quick button{
+ padding:13px 5px;
+ background:#15131d;
+ border:1px solid #30293a;
+ color:white;
+ border-radius:11px;
+ font-weight:bold
+}
+
+.quick button:hover{
+ border-color:#8141df
+}
+
+.panel{
+ background:#11111a;
+ border:1px solid #292432;
+ border-radius:17px;
+ padding:15px;
+ margin-top:15px
+}
+
+.panelTitle{
+ font-weight:bold;
+ margin-bottom:10px
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px
+}
+
+.stat{
+ background:#17151e;
+ border-radius:11px;
+ padding:13px;
+ text-align:center;
+ font-size:10px;
+ color:#888
+}
+
+.num{
+ color:#ae74ff;
+ font-size:21px;
+ font-weight:bold
+}
+
+/* STOPWATCH */
+
+.laps{
+ max-height:220px;
+ overflow:auto;
+ margin-top:15px
+}
+
+.lap{
+ display:flex;
+ justify-content:space-between;
+ padding:10px;
+ margin:5px 0;
+ background:#17151e;
+ border-radius:9px;
+ font-size:12px
+}
+
+/* ABOUT / SETTINGS */
+
+.cardPage{
+ background:#11111a;
+ border:1px solid #38204e;
+ border-radius:23px;
+ padding:30px
+}
+
+.cardPage h2{
+ color:#a96cff
+}
+
+.cardPage p{
+ color:#999;
+ line-height:1.7
+}
+
+.profile{
+ text-align:center
+}
+
+.profile img{
+ width:100px;
+ height:100px;
+ border-radius:50%;
+ object-fit:cover;
+ background:#7832e5;
+ border:3px solid #9e5cff
+}
+
+.fileBtn{
+ display:inline-block;
+ padding:11px 16px;
+ margin-top:12px;
+ background:#7832e5;
+ border-radius:10px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.fileBtn input{display:none}
+
+.danger{
+ background:#38121d!important;
+ color:#ff829f!important
+}
+
+@media(max-width:600px){
+ .quick{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .top{align-items:flex-start}
+ .nav{overflow-x:auto}
+ .nav button{min-width:105px}
+ .inputs input{width:62px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div class="auth" id="auth">
+
+<div class="logo">◷ ChronoX</div>
+<div class="sub">Your time. Your control.</div>
+
+<div class="tabs">
+<button class="on" id="loginTab">LOGIN</button>
+<button id="registerTab">REGISTER</button>
+</div>
+
+<div id="loginForm">
+
+<button class="main social" onclick="socialLogin('Google')">
+🔵 Continue with Google
+</button>
+
+<button class="main social" onclick="socialLogin('Apple')">
+ Continue with Apple
+</button>
+
+<div style="text-align:center;color:#555;font-size:11px;margin:12px">
+or
+</div>
+
+<input id="identity" placeholder="Username or email">
+<input id="password" type="password" placeholder="Password">
+
+<button class="main" onclick="login()">LOGIN</button>
+<button class="main social" onclick="openApp('Guest')">
+CONTINUE AS GUEST
+</button>
+
+</div>
+
+
+<div id="registerForm" style="display:none">
+
+<input id="newUser" placeholder="Username">
+<input id="newEmail" placeholder="Email">
+
+<div class="dob">
+Date of birth — You must be 13 or older
+</div>
+
+<input id="dob" type="text" placeholder="MM/DD/YYYY" maxlength="10">
+
+<input id="newPass" type="password" placeholder="Password">
+
+<button class="main" onclick="register()">
+CREATE ACCOUNT
+</button>
+
+</div>
+
+<div class="msg" id="msg"></div>
+
+<div class="history">
+<b>🕘 Previous Timers</b>
+<div id="historyList" class="empty">
+No previous timers yet.
+</div>
+</div>
+
+</div>
+
+
+<!-- APP -->
+
+<div class="app" id="app">
+
+<div class="top">
+
+<div class="brand">◷ ChronoX</div>
+
+<div class="userbox">
+<img id="topAvatar" class="avatar">
+<span id="user"></span>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+</div>
+
+
+<!-- TOP NAV -->
+
+<div class="nav">
+
+<button class="on" id="timerNav" onclick="page('timer')">
+⏱ TIMER
+</button>
+
+<button id="stopNav" onclick="page('stopwatch')">
+⏲ STOPWATCH
+</button>
+
+<button id="historyNav" onclick="page('history')">
+🕘 HISTORY
+</button>
+
+<button id="settingsNav" onclick="page('settings')">
+⚙️ SETTINGS
+</button>
+
+<button id="aboutNav" onclick="page('about')">
+ℹ️ ABOUT CHRONOX
+</button>
+
+</div>
+
+
+<!-- TIMER -->
+
+<div class="page active" id="timerPage">
+
+<div class="timerBox">
+
+<div class="label">COUNTDOWN TIMER</div>
+
+<div id="display">00:00:00</div>
+
+<div class="inputs">
+<input id="h" type="number" min="0" max="23" value="0">
+<span>:</span>
+<input id="m" type="number" min="0" max="59" value="0">
+<span>:</span>
+<input id="s" type="number" min="0" max="59" value="0">
+</div>
+
+<div class="controls">
+<button onclick="startTimer()">▶ START</button>
+<button onclick="pause()">⏸ PAUSE</button>
+<button onclick="resetTimer()">↻ RESET</button>
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panelTitle">⚡ Quick Timers</div>
+
+<div class="quick">
+<button onclick="quick(10)">10 SEC</button>
+<button onclick="quick(30)">30 SEC</button>
+<button onclick="quick(60)">1 MIN</button>
+<button onclick="quick(300)">5 MIN</button>
+<button onclick="quick(600)">10 MIN</button>
+<button onclick="quick(900)">15 MIN</button>
+<button onclick="quick(1800)">30 MIN</button>
+<button onclick="quick(3600)">1 HOUR</button>
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panelTitle">🔔 Alarm</div>
+
+<select id="sound">
+<option value="1">Classic</option>
+<option value="2">Double</option>
+<option value="3">Digital</option>
+<option value="4">Pulse</option>
+<option value="5">Alert</option>
+<option value="6">Low</option>
+<option value="7">Triple</option>
+<option value="8">Rising</option>
+<option value="9">Falling</option>
+<option value="10">Radar</option>
+<option value="11">Bell</option>
+<option value="12">Soft</option>
+<option value="13">Rapid</option>
+<option value="14">Space</option>
+<option value="15">Victory</option>
+</select>
+
+<button class="main" onclick="alarm()">
+🔊 TEST ALARM
+</button>
+
+</div>
+
+</div>
+
+
+<!-- STOPWATCH -->
+
+<div class="page" id="stopwatchPage">
+
+<div class="timerBox">
+
+<div class="label">STOPWATCH</div>
+
+<div id="swDisplay">00:00:00</div>
+
+<div class="controls">
+<button onclick="startSW()">▶ START</button>
+<button onclick="lap()">🏁 LAP</button>
+<button onclick="pause()">⏸ PAUSE</button>
+<button onclick="resetSW()">↻ RESET</button>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">🏁 Laps</div>
+
+<div id="laps" class="laps">
+<div class="empty">No laps yet.</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="page" id="historyPage">
+
+<div class="cardPage">
+
+<h2>🕘 Timer History</h2>
+
+<div id="fullHistory"></div>
+
+<button class="main danger" onclick="clearHistory()">
+CLEAR TIMER HISTORY
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="page" id="settingsPage">
+
+<div class="cardPage">
+
+<h2>⚙️ Settings</h2>
+
+<div class="profile">
+
+<img id="profilePic">
+
+<br>
+
+<label class="fileBtn">
+📷 Change Profile Picture
+<input type="file" accept="image/*" onchange="changePic(event)">
+</label>
+
+</div>
+
+<div class="panel">
+
+<b>Account</b>
+
+<p id="accountInfo" style="color:#888;font-size:12px"></p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<div class="page" id="aboutPage">
+
+<div class="cardPage">
+
+<h2>◷ About ChronoX</h2>
+
+<p>
+ChronoX is a timer and stopwatch application built
+for simple, fast and reliable time tracking.
+</p>
+
+<div class="feature">⏱ Countdown timers</div>
+<div class="feature">⚡ Quick timer presets</div>
+<div class="feature">⏲ Stopwatch</div>
+<div class="feature">🏁 Stopwatch laps</div>
+<div class="feature">🔔 15 alarm sounds</div>
+<div class="feature">🕘 Timer history</div>
+<div class="feature">📊 Personal statistics</div>
+<div class="feature">👤 Custom profile picture</div>
+<div class="feature">📱 Mobile-friendly interface</div>
+
+<p>
+ChronoX — Your time. Your control.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="panel stats">
+
+<div class="stat">
+<div class="num" id="done">0</div>
+Completed
+</div>
+
+<div class="stat">
+<div class="num" id="pauses">0</div>
+Pauses
+</div>
+
+<div class="stat">
+<div class="num" id="secs">0</div>
+Seconds
+</div>
+
+<div class="stat">
+<div class="num" id="lapsCount">0</div>
+Laps
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* TAB ICON */
+
+(()=>{
+ let c=document.createElement("canvas");
+ let x=c.getContext("2d");
+
+ c.width=c.height=64;
+
+ x.fillStyle="#08080d";
+ x.fillRect(0,0,64,64);
+
+ x.fillStyle="#813cff";
+ x.beginPath();
+ x.roundRect(5,5,54,54,15);
+ x.fill();
+
+ x.strokeStyle="white";
+ x.lineWidth=4;
+
+ x.beginPath();
+ x.arc(32,32,17,0,Math.PI*2);
+ x.stroke();
+
+ x.beginPath();
+ x.moveTo(32,32);
+ x.lineTo(32,21);
+ x.moveTo(32,32);
+ x.lineTo(42,37);
+ x.stroke();
+
+ c.toBlob(b=>{
+  let l=document.createElement("link");
+  l.rel="icon";
+  l.href=URL.createObjectURL(b);
+  document.head.appendChild(l);
+ });
+})();
+
+
+let user=null;
+let running=false;
+let mode="timer";
+let timer=0;
+let stopwatch=0;
+let interval=null;
+let timerOriginal=0;
+let lapNumber=0;
+
+
+/* HELPERS */
+
+const $=x=>document.getElementById(x);
+
+function fmt(n){
+
+ n=Math.max(0,n);
+
+ return String(Math.floor(n/3600)).padStart(2,"0")+":"+
+ String(Math.floor(n%3600/60)).padStart(2,"0")+":"+
+ String(n%60).padStart(2,"0");
+}
+
+
+/* ACCOUNTS */
+
+function accounts(){
+ return JSON.parse(localStorage.accounts||"[]");
+}
+
+
+/* DATE OF BIRTH */
+
+function validDOB(value){
+
+ let parts=value.split("/");
+
+ if(parts.length!==3)return false;
+
+ let month=+parts[0];
+ let day=+parts[1];
+ let year=+parts[2];
+
+ if(!month||!day||!year)return false;
+ if(month<1||month>12)return false;
+
+ let birth=new Date(year,month-1,day);
+
+ if(
+  birth.getFullYear()!=year||
+  birth.getMonth()!=month-1||
+  birth.getDate()!=day
+ )return false;
+
+ let today=new Date();
+
+ let age=today.getFullYear()-year;
+
+ let birthday=new Date(
+  today.getFullYear(),
+  month-1,
+  day
+ );
+
+ if(today<birthday)age--;
+
+ return age>=13;
+}
+
+
+/* REGISTER */
+
+function register(){
+
+ let u=$("newUser").value.trim();
+ let e=$("newEmail").value.trim().toLowerCase();
+ let d=$("dob").value.trim();
+ let p=$("newPass").value;
+
+ let a=accounts();
+
+ if(u.length<3){
+  $("msg").textContent="Username must be at least 3 characters.";
+  return;
+ }
+
+ if(!e.includes("@")){
+  $("msg").textContent="Enter a valid email.";
+  return;
+ }
+
+ if(!validDOB(d)){
+  $("msg").textContent="You must be 13 or older to use ChronoX.";
+  return;
+ }
+
+ if(p.length<6){
+  $("msg").textContent="Password must be at least 6 characters.";
+  return;
+ }
+
+ if(a.some(x=>x.u.toLowerCase()==u.toLowerCase())){
+  $("msg").textContent="Username already exists.";
+  return;
+ }
+
+ if(a.some(x=>x.e==e)){
+  $("msg").textContent="Email already exists.";
+  return;
+ }
+
+ a.push({
+  u:u,
+  e:e,
+  dob:d,
+  p:p
+ });
+
+ localStorage.accounts=JSON.stringify(a);
+
+ $("msg").textContent="Account created!";
+
+ $("loginTab").click();
+}
+
+
+/* LOGIN */
+
+function login(){
+
+ let i=$("identity").value.toLowerCase();
+ let p=$("password").value;
+
+ let x=accounts().find(a=>
+  a.u.toLowerCase()==i||
+  a.e==i
+ );
+
+ if(!x||x.p!=p){
+  $("msg").textContent="Incorrect username/email or password.";
+  return;
+ }
+
+ openApp(x.u);
+}
+
+
+/* GOOGLE / APPLE DEMO */
+
+function socialLogin(provider){
+
+ $("msg").textContent=
+ provider+
+ " sign-in needs OAuth setup for a real account.";
+
+}
+
+
+/* APP */
+
+function openApp(u){
+
+ user=u;
+
+ localStorage.lastUser=u;
+
+ $("auth").style.display="none";
+ $("app").style.display="block";
+
+ $("user").textContent=u;
+
+ document.title="ChronoX";
+
+ loadProfile();
+ loadStats();
+ showHistory();
+ update();
+}
+
+
+/* LOGOUT */
+
+function logout(){
+
+ stop();
+
+ $("app").style.display="none";
+ $("auth").style.display="block";
+
+ document.title="Login — ChronoX";
+
+ showHistory();
+}
+
+
+/* NAVIGATION */
+
+function page(p){
+
+ stop();
+
+ document.querySelectorAll(".page")
+ .forEach(x=>x.classList.remove("active"));
+
+ document.querySelectorAll(".nav button")
+ .forEach(x=>x.classList.remove("on"));
+
+ if(p=="timer"){
+  $("timerPage").classList.add("active");
+  $("timerNav").classList.add("on");
+  document.title="ChronoX — Timer";
+ }
+
+ if(p=="stopwatch"){
+  $("stopwatchPage").classList.add("active");
+  $("stopNav").classList.add("on");
+  document.title="ChronoX — Stopwatch";
+ }
+
+ if(p=="history"){
+  $("historyPage").classList.add("active");
+  $("historyNav").classList.add("on");
+  showFullHistory();
+  document.title="ChronoX — History";
+ }
+
+ if(p=="settings"){
+  $("settingsPage").classList.add("active");
+  $("settingsNav").classList.add("on");
+  loadProfile();
+  document.title="ChronoX — Settings";
+ }
+
+ if(p=="about"){
+  $("aboutPage").classList.add("active");
+  $("aboutNav").classList.add("on");
+  document.title="About ChronoX";
+ }
+}
+
+
+/* TIMER */
+
+function startTimer(){
+
+ if(running)return;
+
+ mode="timer";
+
+ if(!timer){
+
+  timer=Math.min(
+   86399,
+   (+$("h").value||0)*3600+
+   (+$("m").value||0)*60+
+   (+$("s").value||0)
+  );
+
+  timerOriginal=timer;
+
+  if(!timer)return;
+ }
+
+ running=true;
+
+ interval=setInterval(tick,1000);
+
+ update();
+}
+
+
+function tick(){
+
+ if(mode=="timer"){
+
+  if(timer>0){
+
+   timer--;
+
+   addSeconds();
+
+  }else{
+
+   finish();
+
+   return;
+  }
+
+ }else{
+
+  stopwatch++;
+
+  addSeconds();
+ }
+
+ update();
+}
+
+
+/* PAUSE */
+
+function pause(){
+
+ if(!running)return;
+
+ stop();
+
+ let x=getStats();
+
+ x.pauses++;
+
+ saveStats(x);
+
+ loadStats();
+}
+
+
+/* STOP */
+
+function stop(){
+
+ clearInterval(interval);
+
+ interval=null;
+
+ running=false;
+}
+
+
+/* RESET TIMER */
+
+function resetTimer(){
+
+ stop();
+
+ timer=0;
+ timerOriginal=0;
+
+ $("h").value=0;
+ $("m").value=0;
+ $("s").value=0;
+
+ update();
+}
+
+
+/* QUICK TIMER */
+
+function quick(seconds){
+
+ page("timer");
+
+ stop();
+
+ timer=seconds;
+ timerOriginal=seconds;
+
+ let h=Math.floor(seconds/3600);
+ let m=Math.floor(seconds%3600/60);
+ let s=seconds%60;
+
+ $("h").value=h;
+ $("m").value=m;
+ $("s").value=s;
+
+ update();
+
+ startTimer();
+}
+
+
+/* FINISH */
+
+function finish(){
+
+ stop();
+
+ let a=history();
+
+ a.unshift({
+  t:timerOriginal,
+  d:new Date().toLocaleString()
+ });
+
+ localStorage["hist_"+user]=
+ JSON.stringify(a.slice(0,50));
+
+ let x=getStats();
+
+ x.done++;
+
+ saveStats(x);
+
+ timer=0;
+
+ alarm();
+
+ showHistory();
+ showFullHistory();
+ loadStats();
+ update();
+}
+
+
+/* STOPWATCH */
+
+function startSW(){
+
+ if(running)return;
+
+ mode="stopwatch";
+
+ running=true;
+
+ interval=setInterval(tick,1000);
+}
+
+
+function resetSW(){
+
+ stop();
+
+ stopwatch=0;
+ lapNumber=0;
+
+ $("laps").innerHTML=
+ '<div class="empty">No laps yet.</div>';
+
+ $("lapsCount").textContent=0;
+
+ update();
+}
+
+
+/* LAP */
+
+function lap(){
+
+ if(!running||mode!="stopwatch")return;
+
+ lapNumber++;
+
+ let div=document.createElement("div");
+
+ div.className="lap";
+
+ div.innerHTML=
+ "<b>Lap "+lapNumber+"</b>"+
+ "<span>"+fmt(stopwatch)+"</span>";
+
+ if(lapNumber==1)
+  $("laps").innerHTML="";
+
+ $("laps").prepend(div);
+
+ $("lapsCount").textContent=lapNumber;
+}
+
+
+/* UPDATE */
+
+function update(){
+
+ $("display").textContent=fmt(timer);
+ $("swDisplay").textContent=fmt(stopwatch);
+}
+
+
+/* HISTORY */
+
+function history(){
+
+ return JSON.parse(
+  localStorage["hist_"+user]||"[]"
+ );
+}
+
+
+function showHistory(){
+
+ if(!user){
+  $("historyList").innerHTML=
+   "Log in to view your previous timers.";
+  return;
+ }
+
+ let a=history();
+
+ $("historyList").innerHTML=a.length?
+
+ a.slice(0,5).map(x=>`
+ <div class="item">
+ <b>${fmt(x.t)}</b>
+ <span>${x.d}</span>
+ </div>
+ `).join("")
+
+ :"No previous timers yet.";
+}
+
+
+function showFullHistory(){
+
+ let a=history();
+
+ $("fullHistory").innerHTML=a.length?
+
+ a.map((x,i)=>`
+ <div class="item">
+ <b>#${i+1} — ${fmt(x.t)}</b>
+ <span>${x.d}</span>
+ </div>
+ `).join("")
+
+ :"No timers completed yet.";
+}
+
+
+function clearHistory(){
+
+ if(!confirm("Clear all timer history?"))return;
+
+ localStorage.removeItem("hist_"+user);
+
+ showHistory();
+ showFullHistory();
+}
+
+
+/* STATS */
+
+function getStats(){
+
+ return JSON.parse(
+  localStorage["stats_"+user]||
+  '{"done":0,"pauses":0,"seconds":0}'
+ );
+}
+
+
+function saveStats(x){
+ localStorage["stats_"+user]=JSON.stringify(x);
+}
+
+
+function addSeconds(){
+
+ let x=getStats();
+
+ x.seconds++;
+
+ saveStats(x);
+
+ loadStats();
+}
+
+
+function loadStats(){
+
+ let x=getStats();
+
+ $("done").textContent=x.done;
+ $("pauses").textContent=x.pauses;
+ $("secs").textContent=x.seconds;
+}
+
+
+/* PROFILE PICTURE */
+
+function changePic(event){
+
+ let file=event.target.files[0];
+
+ if(!file)return;
+
+ if(!file.type.startsWith("image/"))return;
+
+ let reader=new FileReader();
+
+ reader.onload=()=>{
+
+  localStorage["pic_"+user]=reader.result;
+
+  loadProfile();
+ };
+
+ reader.readAsDataURL(file);
+}
+
+
+function loadProfile(){
+
+ let pic=
+ localStorage["pic_"+user];
+
+ let image=pic||
+ "data:image/svg+xml,"+
+ encodeURIComponent(`
+ <svg xmlns="http://www.w3.org/2000/svg"
+ width="200" height="200">
+ <rect width="100%" height="100%"
+ fill="#7832e5"/>
+ <text x="50%" y="55%"
+ text-anchor="middle"
+ font-size="90"
+ fill="white">◷</text>
+ </svg>`);
+
+ $("profilePic").src=image;
+ $("topAvatar").src=image;
+
+ let a=accounts().find(x=>x.u==user);
+
+ if(a){
+
+  $("accountInfo").innerHTML=
+  "Username: "+a.u+
+  "<br>Email: "+a.e+
+  "<br>Date of birth: "+a.dob;
+ }
+}
+
+
+/* ALARM SOUNDS */
+
+function alarm(){
+
+ let AC=window.AudioContext||
+ window.webkitAudioContext;
+
+ let c=new AC();
+
+ let n=c.currentTime;
+
+ let patterns=[
+  [800,1000,1200],
+  [700,1100,700],
+  [1200,900,1200],
+  [500,800,1100],
+  [1500,1300,1500],
+  [350,400,350],
+  [700,900,1100],
+  [500,800,1200],
+  [1200,900,600],
+  [700,700,1200],
+  [900,1200,900],
+  [500,600,700],
+  [1400,1400,1400],
+  [300,600,900],
+  [1046,1318,1568]
+ ];
+
+ let freqs=patterns[
+  +$("sound").value-1
+ ];
+
+ freqs.forEach((f,i)=>{
+
+  let o=c.createOscillator();
+  let g=c.createGain();
+
+  o.frequency.value=f;
+
+  o.connect(g);
+  g.connect(c.destination);
+
+  g.gain.setValueAtTime(
+   .18,n+i*.22
+  );
+
+  g.gain.exponentialRampToValueAtTime(
+   .001,n+i*.22+.18
+  );
+
+  o.start(n+i*.22);
+  o.stop(n+i*.22+.2);
+ });
+}
+
+
+/* LIMIT TIMER VALUES */
+
+$("h").oninput=()=>{
+
+ if(+$("h").value>23)$("h").value=23;
+ if(+$("h").value<0)$("h").value=0;
+};
+
+$("m").oninput=()=>{
+
+ if(+$("m").value>59)$("m").value=59;
+ if(+$("m").value<0)$("m").value=0;
+};
+
+$("s").oninput=()=>{
+
+ if(+$("s").value>59)$("s").value=59;
+ if(+$("s").value<0)$("s").value=0;
+};
+
+
+/* LOGIN TABS */
+
+$("loginTab").onclick=()=>{
+
+ $("loginForm").style.display="block";
+ $("registerForm").style.display="none";
+
+ $("loginTab").className="on";
+ $("registerTab").className="";
+
+ document.title="Login — ChronoX";
+};
+
+
+$("registerTab").onclick=()=>{
+
+ $("loginForm").style.display="none";
+ $("registerForm").style.display="block";
+
+ $("registerTab").className="on";
+ $("loginTab").className="";
+
+ document.title="Register — ChronoX";
+};
+
+
+/* LOAD LAST USER'S HISTORY */
+
+let last=localStorage.lastUser;
+
+if(last){
+
+ user=last;
+ showHistory();
+ user=null;
+
+}else{
+
+ showHistory();
+}
+
+</script>
+
+</body>
+</html>
